@@ -108,7 +108,7 @@ class BMWCPOCrawler:
 
         return df_merged
 
-    def send_email_with_table(self, df, subject, to_emails, smtp_server, smtp_port, smtp_user, smtp_password):
+    def send_email_with_table(self, df, duration, subject, to_emails, smtp_server, smtp_port, smtp_user, smtp_password):
         msg = MIMEMultipart('alternative')
         msg['Subject'] = subject
         msg['From'] = smtp_user
@@ -135,6 +135,7 @@ class BMWCPOCrawler:
         <body>
           <h2>BMW CPO Midwest Inventory Report</h2>
           {html_table}
+          <p><em>Runtime Duration: {str(duration).split('.')[0]}</em></p>
         </body>
         </html>
         """
@@ -149,6 +150,8 @@ class BMWCPOCrawler:
 
 
 if __name__ == "__main__":
+    start_time = datetime.now()
+
     # Load keys & tokens
     with open('keys.json', 'r') as f:
         keys = json.load(f)
@@ -165,8 +168,11 @@ if __name__ == "__main__":
     crawler = BMWCPOCrawler(auth_token)
     crawler.crawl_zip_codes(target_zips)
     df_with_changes = crawler.update_database_and_calculate_changes()
+    end_time = datetime.now()
+    duration = end_time - start_time
     crawler.send_email_with_table(
         df=df_with_changes,
+        duration=duration,
         subject=f"BMW CPO Midwest Inventory - {today}",
         to_emails=keys["to_emails"],
         smtp_server="smtp.gmail.com",
@@ -174,3 +180,4 @@ if __name__ == "__main__":
         smtp_user=keys["smtp_user"],
         smtp_password=keys["smtp_password"]  # Use an App Password
     )
+    print(f"Total runtime: {str(duration).split('.')[0]}")
