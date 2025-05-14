@@ -8,6 +8,7 @@ from email.message import EmailMessage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import json
+from pathlib import Path
 
 
 class BMWCPOCrawler:
@@ -151,13 +152,14 @@ class BMWCPOCrawler:
 
 if __name__ == "__main__":
     start_time = datetime.now()
+    BASE_DIR = Path(__file__).resolve().parent
 
     # Load keys & tokens
-    with open('keys.json', 'r') as f:
+    with open(BASE_DIR / 'keys.json', 'r') as f:
         keys = json.load(f)
 
     # Load BMW showroom ZIPs
-    with open('showrooms.json', 'r') as f:
+    with open(BASE_DIR / 'showrooms.json', 'r') as f:
         bmw_showroom_zips = json.load(f)
 
     auth_token = keys['auth_token']
