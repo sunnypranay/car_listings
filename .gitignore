@@ -1,0 +1,23 @@
+# Ignore sensitive keys and credentials
+keys.json
+
+# Ignore the SQLite database file
+bmw_inventory.db
+
+# You might also want to ignore other common files/directories:
+# Python virtual environment
+venv/
+*.venv/
+env/
+
+# Python bytecode and cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# IDE/editor specific files
+.vscode/
+.idea/
+*.swp
+*.swo
