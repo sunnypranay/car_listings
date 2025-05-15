@@ -21,7 +21,7 @@ class InventoryCrawler(ABC):
 
     def crawl_zip_codes(self, zip_codes: List[str]):
         """Crawl inventory for multiple zip codes"""
-        for index, zip_code in enumerate(zip_codes[0:3], start=1):
+        for index, zip_code in enumerate(zip_codes, start=1):
             print(f"Fetching inventory for ZIP: {zip_code}")
             page_index = 0
             while True:
@@ -45,7 +45,5 @@ class InventoryCrawler(ABC):
         """Generate a report from the crawled inventory"""
         df_with_changes = self.db.update_inventory(
             list(self.all_vehicles.values()))
-        report = Report.from_dataframe(df_with_changes, self.all_vehicles[list(
+        return Report.from_dataframe(df_with_changes, self.all_vehicles[list(
             self.all_vehicles.keys())[0]].brand, duration)
-        report._df = df_with_changes  # Set the internal DataFrame
-        return report
