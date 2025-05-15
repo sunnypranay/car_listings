@@ -21,7 +21,7 @@ class InventoryCrawler(ABC):
 
     def crawl_zip_codes(self, zip_codes: List[str]):
         """Crawl inventory for multiple zip codes"""
-        for index, zip_code in enumerate(zip_codes, start=1):
+        for index, zip_code in enumerate(zip_codes[0:3], start=1):
             print(f"Fetching inventory for ZIP: {zip_code}")
             page_index = 0
             while True:

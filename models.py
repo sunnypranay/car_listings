@@ -40,15 +40,23 @@ class BMWVehicleTransformer(VehicleTransformer):
 
 class MercedesVehicleTransformer(VehicleTransformer):
     def transform(self, raw_data: Dict[str, Any]) -> Vehicle:
-        # Implement Mercedes-specific transformation
-        # This is a placeholder - adjust according to actual Mercedes API response format
+        # Extract vehicle details from Mercedes API response
+        used_attrs = raw_data.get('usedVehicleAttributes', {})
+
+        # Get drivetrain from properties
+        drivetrain = 'Unknown'
+        for prop in raw_data.get('properties', []):
+            if prop.get('name') == 'AUTOMATIC_TRANSMISSION':
+                drivetrain = prop.get('value', 'Unknown')
+                break
+
         return Vehicle(
             vin=raw_data['vin'],
-            model=raw_data['model'],
-            price=float(raw_data['price']),
-            odometer=float(raw_data['mileage']),
-            drivetrain=raw_data['driveType'],
-            url=raw_data['vehicleUrl'],
+            model=raw_data['modelName'],
+            price=float(raw_data['dsrp']),
+            odometer=float(used_attrs.get('mileage', 0)),
+            drivetrain=drivetrain,
+            url=raw_data['eLink'],
             brand='Mercedes',
             raw_data=raw_data
         )
