@@ -2,7 +2,7 @@
 keys.json
 
 # Ignore the SQLite database file
-bmw_inventory.db
+vehicle_inventory.db
 
 # You might also want to ignore other common files/directories:
 # Python virtual environment
